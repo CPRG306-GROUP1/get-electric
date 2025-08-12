@@ -1,52 +1,97 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
-const FilterBar = () => {
+const FilterBar = ({ onSearch }) => {
+  const [category, setCategory] = useState(""); 
+  const [priceMode, setPriceMode] = useState("under"); 
+  const [price, setPrice] = useState(0); 
+  const [query, setQuery] = useState(""); 
 
-  // These states may need to be held at the parent level on the main page - not sure how the fetch function will work yet
-  const [category, setCategory] = useState(""); // Product category filter
-  const [priceMode, setPriceMode] = useState(""); // Sets price mode to either under or over a certain dollar amount
-  const [price, setPrice] = useState(0); // Sets the price level the user wants to query for
-  const [query, setQuery] = useState(""); // Allows user to input a search term
+  const handleSearch = () => {
+    // Pass filters up to parent
+    onSearch({ query, category, priceMode, price });
+  };
 
   return (
-    <div className="flex bg-gray-300 text-gray-900 my-10 justify-around rounded p-2">
-      <div>
-        <h1>Search Term</h1>
+    <div className="flex flex-wrap gap-4 bg-gray-300 text-gray-900 my-10 justify-around rounded p-4">
+      
+      {/* Search Term */}
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1">Search Term</label>
         <input
           value={query}
           placeholder="What are you looking for?"
           type="text"
           onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
-      {/* Category will need to be a dropdown, Maybe redix has one? */}
-      <div>
-        <h1>Category</h1>
-        <input
-          value={category}
-          placeholder="Select a Category"
-          type="text"
-          onChange={(e) => setCategory(e.target.value)}
+          className="p-2 border rounded"
         />
       </div>
 
-      <div>
-        <h1>Price</h1>
+      {/* Category Dropdown */}
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1">Category</label>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Electronics">Electronics</option>
+        </select>
+      </div>
+
+      {/* Price Input */}
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1">Price</label>
         <input
           value={price}
-          placeholder="What are you looking for?"
+          placeholder="Enter price"
           type="number"
-          onChange={(e) => setPrice(e.target.value)}
+          min="0"
+          onChange={(e) => setPrice(Number(e.target.value))}
+          className="p-2 border rounded"
         />
       </div>
 
-      {/* Need to add toggle button for under or over pricing mode */}
-      
-      <button>
-        Search
-      </button>
+      {/* Price Mode Toggle */}
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1">Price Mode</label>
+        <div className="flex gap-2 items-center">
+          <label>
+            <input
+              type="radio"
+              value="under"
+              checked={priceMode === "under"}
+              onChange={() => setPriceMode("under")}
+              className="mr-1"
+            />
+            Under
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="over"
+              checked={priceMode === "over"}
+              onChange={() => setPriceMode("over")}
+              className="mr-1"
+            />
+            Over
+          </label>
+        </div>
+      </div>
+
+      {/* Search Button */}
+      <div className="flex items-end">
+        <button
+          onClick={handleSearch}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Search
+        </button>
+      </div>
+
     </div>
   );
 };
