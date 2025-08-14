@@ -6,11 +6,6 @@ import { useEffect, useState } from "react";
 import ProductListRenderer from "./components/ProductListRenderer";
 import FilterBar from "./components/FilterBar";
 
-export default function Home() {
-  const [user] = useAuthState(auth);
-  const router = useRouter();
-  const [userSession, setUserSession] = useState(false);
-  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
 
   const testData = [
     {
@@ -196,6 +191,16 @@ export default function Home() {
     },
   ];
 
+  
+export default function Home() {
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+  const [userSession, setUserSession] = useState(false);
+  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+  const [displayedProducts, setDisplayedProducts] = useState(testData)
+
+
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const session = sessionStorage.getItem("user");
@@ -210,12 +215,43 @@ export default function Home() {
     }
   }, [isSessionLoaded, user, userSession, router]);
 
+  // Handle search function
+  const handleSearch = ({ query, category, priceMode, price }) => {
+    let filtered = testData;
+
+    // Search Term filter
+    if (query) {
+      const queryLower = query.toLowerCase()
+      filtered = filtered.filter(
+        (item) => 
+          item.title.toLowerCase().includes(queryLower) ||
+          item.description.toLowerCase().includes(queryLower)
+      );
+    }
+
+    // Category Filter
+    if (category) {
+      filtered = filtered.filter((item) => item.category === category)
+    }
+
+    // Price Filter
+    if (price > 0) {
+      if (priceMode === 'under') {
+        filtered = filtered.filter((item) => item.price <= price);
+      } else {
+        filtered = filtered.filter((item) => item.price >= price)
+      }
+    }
+
+    setDisplayedProducts(filtered)
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow flex-col items-center justify-center p-24">
         <h1 className="text-4xl font-bold text-white">Welcome to Get Electric</h1>
-        <FilterBar />
-        <ProductListRenderer products={testData} />
+        <FilterBar onSearch={handleSearch}/>
+        <ProductListRenderer products={displayedProducts} />
       </main>
     </div>
   );

@@ -29,8 +29,8 @@ const Navbar = () => {
         </Link>
 
         {user && (
-          <Link href="/protected-page" className="text-white mx-2">
-            Protected Page
+          <Link href="/wish-list" className="text-white mx-2">
+            Wish List
           </Link>
         )}
 

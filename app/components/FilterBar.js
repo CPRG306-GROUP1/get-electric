@@ -36,9 +36,16 @@ const FilterBar = ({ onSearch }) => {
           className="p-2 border rounded"
         >
           <option value="">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Electronics">Electronics</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Audio">Audio</option>
+          <option value="Cameras">Cameras</option>
+          <option value="Drones">Drones</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Power">Power</option>
+          <option value="Smart Home">Smart Home</option>
+          <option value="Smartphones">Smart Phones</option>
+          <option value="Tablets">Tablets</option>
+          <option value="Wearables">Wearables</option>
         </select>
       </div>
 
