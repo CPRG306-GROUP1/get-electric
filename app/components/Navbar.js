@@ -29,22 +29,23 @@ const Navbar = () => {
         </Link>
 
         {user && (
-          <Link href="/wish-list" className="text-white mx-2">
+          <Link href="/Wishlist" className="text-white mx-2">
             Wish List
           </Link>
         )}
 
-        {
-            user ? (
-                <button onClick={handleLogOut} className="bg-red-500 text-white px-4 py-2 rounded ml-2">
-                  LogOut
-                </button>
-            ) : (
-                <Link href="/sign-in" className="text-white mx-2">
-                  Sign In
-                </Link>
-            )
-        }
+        {user ? (
+          <button
+            onClick={handleLogOut}
+            className="bg-red-500 text-white px-4 py-2 rounded ml-2"
+          >
+            LogOut
+          </button>
+        ) : (
+          <Link href="/sign-in" className="text-white mx-2">
+            Sign In
+          </Link>
+        )}
       </div>
     </nav>
   );
