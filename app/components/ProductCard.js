@@ -1,10 +1,22 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";  // import router
 import sampleImage from "../public/images/iphone-test-pic.jpg";
 
 const ProductCard = ({ item }) => {
+  const router = useRouter();
+
   const handleAddProduct = () => {
-    // Function to add product to users wishlist
+    // Optionally save product in localStorage
+    const saved = JSON.parse(localStorage.getItem("wishlist")) || [];
+    if (!saved.find((p) => p.id === item.id)) {
+      saved.push(item);
+      localStorage.setItem("wishlist", JSON.stringify(saved));
+    }
+
+    // Navigate to wishlist page
+    router.push("/Wishlist");
   };
 
   return (
@@ -22,14 +34,14 @@ const ProductCard = ({ item }) => {
         <h1 className="font-bold text-xl">{item.title}</h1>
         <p className="text-sm">{item.description}</p>
         <p>${item.price}</p>
-        <p>${item.amazonPrice - item.price} cheaper than on amazon</p>
+        <p>${(item.amazonPrice - item.price).toFixed(2)} cheaper than on Amazon</p>
         <p>
           {item.quantityOnHand > 0
             ? `${item.quantityOnHand} Available - Selling Fast!`
             : "Sold Out"}
         </p>
         <button
-          onClick={handleAddProduct()}
+          onClick={handleAddProduct} // <-- call function on click
           className="text-center bg-green-600 rounded-lg p-1 text-white"
         >
           Add to Wish List
